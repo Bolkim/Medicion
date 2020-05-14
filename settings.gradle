@@ -1,0 +1,2 @@
+rootProject.name='Medicion'
+include ':app'
