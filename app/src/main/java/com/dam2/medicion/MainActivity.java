@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor giroscopio;
     private SensorEventListener giroscopioEventListener;
+    private float x,y,z;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +33,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent){
                 TextView text = (TextView) findViewById(R.id.x);
-                String texto = String.valueOf(sensorEvent.values[0]);
+                x += sensorEvent.values[0];
+                String texto = String.valueOf(Math.round(x));
                 text.setText("X: " + texto);
                 TextView text2 = (TextView) findViewById(R.id.y);
-                String texto2 = String.valueOf(sensorEvent.values[1]);
+                y += sensorEvent.values[1];
+                String texto2 = String.valueOf(Math.round(y));
                 text2.setText("y: " + texto2);
                 TextView text3 = (TextView) findViewById(R.id.z);
-                String texto3 = String.valueOf(sensorEvent.values[2]);
+                z+= sensorEvent.values[2];
+                String texto3 = String.valueOf(Math.round(z));
                 text3.setText("Z: " + texto3);
             }
 
