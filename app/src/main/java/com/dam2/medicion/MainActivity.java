@@ -7,7 +7,6 @@ package com.dam2.medicion;
         import android.hardware.SensorEventListener;
         import android.hardware.SensorManager;
         import android.os.Bundle;
-        import android.view.View;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -15,7 +14,10 @@ public class MainActivity extends AppCompatActivity {
 
     private SensorManager sensorManager;
     private Sensor giroscopio;
+    //private Sensor angulo;
     private SensorEventListener giroscopioEventListener;
+    //private SensorEventListener anguloEventListener;
+
     private float x,y,z;
 
     @Override
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         giroscopio = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        //angulo = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 
         if (giroscopio == null){
             Toast.makeText(this, "Este dispositivo no tiene giroscopio", Toast.LENGTH_LONG).show();
@@ -51,17 +54,33 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+//        anguloEventListener = new SensorEventListener(){
+//            @Override
+//            public void onSensorChanged(SensorEvent sensorEvent){
+//                TextView text = (TextView) findViewById(R.id.angulo);
+//
+//            }
+//
+//            @Override
+//            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//
+//            }
+//        };
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         sensorManager.registerListener(giroscopioEventListener, giroscopio, SensorManager.SENSOR_DELAY_FASTEST);
+        //sensorManager.registerListener(anguloEventListener, angulo, SensorManager.SENSOR_DELAY_FASTEST);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(giroscopioEventListener);
+        //sensorManager.unregisterListener(anguloEventListener);
+
     }
 }
