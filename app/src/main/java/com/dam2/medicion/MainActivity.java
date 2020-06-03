@@ -14,9 +14,9 @@ public class MainActivity extends AppCompatActivity {
 
     private SensorManager sensorManager;
     private Sensor giroscopio;
-    //private Sensor angulo;
+    private Sensor angulo;
     private SensorEventListener giroscopioEventListener;
-    //private SensorEventListener anguloEventListener;
+    private SensorEventListener anguloEventListener;
 
     private float x,y,z;
 
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         giroscopio = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        //angulo = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        angulo = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
         if (giroscopio == null){
             Toast.makeText(this, "Este dispositivo no tiene giroscopio", Toast.LENGTH_LONG).show();
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView text2 = (TextView) findViewById(R.id.y);
                 y += sensorEvent.values[1];
                 String texto2 = String.valueOf(Math.round(y));
-                text2.setText("y: " + texto2);
+                text2.setText("Y: " + texto2);
                 TextView text3 = (TextView) findViewById(R.id.z);
                 z+= sensorEvent.values[2];
                 String texto3 = String.valueOf(Math.round(z));
@@ -54,25 +54,26 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-//        anguloEventListener = new SensorEventListener(){
-//            @Override
-//            public void onSensorChanged(SensorEvent sensorEvent){
-//                TextView text = (TextView) findViewById(R.id.angulo);
-//
-//            }
-//
-//            @Override
-//            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-//
-//            }
-//        };
+        anguloEventListener = new SensorEventListener(){
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent){
+                TextView text = (TextView) findViewById(R.id.angulo);
+                text.setText("Angulo en Z: " + Math.round(sensorEvent.values[2] * 180));
+
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         sensorManager.registerListener(giroscopioEventListener, giroscopio, SensorManager.SENSOR_DELAY_FASTEST);
-        //sensorManager.registerListener(anguloEventListener, angulo, SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(anguloEventListener, angulo, SensorManager.SENSOR_DELAY_FASTEST);
 
     }
 
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(giroscopioEventListener);
-        //sensorManager.unregisterListener(anguloEventListener);
+        sensorManager.unregisterListener(anguloEventListener);
 
     }
 }
